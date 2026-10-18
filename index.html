@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SIRED</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#020617">
+<style>
+  html,body{margin:0;height:100%;background:#020617;overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#020617}
+  #cargando{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    background:#020617;color:#e2e8f0;font:700 14px/1.2 system-ui,sans-serif;letter-spacing:.3em;z-index:2;transition:opacity .5s;text-align:center;padding:0 24px}
+  #cargando .rueda{width:46px;height:46px;border-radius:50%;border:3px solid rgba(34,211,238,.2);border-top-color:#22d3ee;animation:g 0.9s linear infinite}
+  #cargando small{font-weight:500;letter-spacing:.05em;color:#94a3b8;opacity:0;transition:opacity .4s}
+  #cargando small a{color:#22d3ee}
+  @keyframes g{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="cargando">
+  <div class="rueda"></div>
+  <div id="nombre">SIRED</div>
+  <small id="ayuda">Si tarda mucho, <a id="directo" href="#">abrir directamente</a></small>
+</div>
+<iframe id="app" title="Aplicación" allow="clipboard-write; web-share; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+<noscript>Esta página necesita JavaScript activado.</noscript>
+<script>
+  // =====================================================================
+  //  ÚNICO LUGAR QUE DEBES EDITAR
+  // =====================================================================
+
+  // 1) Pega aquí la URL de tu aplicación web de Apps Script (termina en /exec):
+  var URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbyBrV6X4LxZD8JMFsAqkSvHHLivpHumWuVFwsaC_-4qbdkXsoqn78ksJNJUkNJOGgpd/exec";
+
+  // 2) Nombre que aparece en la PESTAÑA del navegador (pon el que quieras):
+  var NOMBRE_PESTANA = "TRIAJE_SD";
+
+  // 3) Texto de la PANTALLA DE CARGA (el que sale con la rueda girando):
+  var TEXTO_CARGA = "SIRED";
+
+  // =====================================================================
+  //  No toques nada de aquí para abajo
+  // =====================================================================
+  var $ = function (id) { return document.getElementById(id); };
+  document.title = (NOMBRE_PESTANA || "").trim() || "Aplicación";
+  $("nombre").textContent = (TEXTO_CARGA || "").trim();
+
+  if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(URL_APPS_SCRIPT)) {
+    document.querySelector(".rueda").style.display = "none";
+    $("nombre").textContent = "FALTA CONFIGURAR LA URL";
+    $("ayuda").innerHTML = "Edita este archivo y pega la URL /exec en <b>URL_APPS_SCRIPT</b>";
+    $("ayuda").style.opacity = "1";
+  } else {
+    // Se conserva lo que venga después del "?" (por ejemplo ?verificar=SOL-...)
+    var destino = URL_APPS_SCRIPT + (location.search || "");
+    var marco = $("app");
+    marco.src = destino;
+    $("directo").href = destino;
+    marco.addEventListener("load", function () {
+      var c = $("cargando");
+      c.style.opacity = "0"; setTimeout(function () { c.style.display = "none"; }, 500);
+    });
+    setTimeout(function () { $("ayuda").style.opacity = "1"; }, 9000);
+  }
+</script>
+</body>
+</html>
