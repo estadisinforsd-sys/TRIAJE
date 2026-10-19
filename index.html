@@ -3,24 +3,121 @@
 <head>
 <meta charset="utf-8">
 <title>SIRED</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#020617">
+<!-- Ícono de la pestaña (SIRED · salud digital). Para cambiarlo, reemplaza esta línea. -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%2322d3ee%22/%3E%3Cstop offset=%22.55%22 stop-color=%22%232563eb%22/%3E%3Cstop offset=%221%22 stop-color=%22%236d28d9%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22c%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22/%3E%3Cstop offset=%221%22 stop-color=%22%23cffafe%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2215%22 fill=%22url(%23g)%22/%3E%3Cpath d=%22M25 11h14a3 3 0 0 1 3 3v11h11a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H42v11a3 3 0 0 1-3 3H25a3 3 0 0 1-3-3V39H11a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h11V14a3 3 0 0 1 3-3z%22 fill=%22url(%23c)%22/%3E%3Cpath d=%22M8 33h13l4-8 6 15 5-11 3 4h17%22 fill=%22none%22 stroke=%22%230b3b8f%22 stroke-width=%223.4%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%2253%22 cy=%2219%22 r=%223%22 fill=%22%23a5f3fc%22/%3E%3C/svg%3E ">
+<!-- Tipografía tecnológica (si no carga, se usa una de respaldo) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  html,body{margin:0;height:100%;background:#020617;overflow:hidden}
-  #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#020617}
-  #cargando{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-    background:#020617;color:#e2e8f0;font:700 14px/1.2 system-ui,sans-serif;letter-spacing:.3em;z-index:2;transition:opacity .5s;text-align:center;padding:0 24px}
-  #cargando .rueda{width:46px;height:46px;border-radius:50%;border:3px solid rgba(34,211,238,.2);border-top-color:#22d3ee;animation:g 0.9s linear infinite}
-  #cargando small{font-weight:500;letter-spacing:.05em;color:#94a3b8;opacity:0;transition:opacity .4s}
-  #cargando small a{color:#22d3ee}
-  @keyframes g{to{transform:rotate(360deg)}}
+  :root{--cy:#22d3ee;--az:#2563eb;--vi:#8b5cf6;--fondo:#020617}
+  html,body{margin:0;height:100%;background:var(--fondo);overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--fondo)}
+
+  /* ===== PANTALLA DE CARGA ===== */
+  #cargando{position:fixed;inset:0;z-index:2;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#0b1a3d 0%,#050b24 45%,#020617 100%);
+    color:#e2e8f0;font-family:'Rajdhani',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;
+    transition:opacity .7s ease,transform .7s ease,filter .7s ease}
+  #cargando.salir{opacity:0;transform:scale(1.18);filter:blur(6px) brightness(1.8)}
+  #fx{position:absolute;inset:0;width:100%;height:100%}
+  #cargando::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+
+  .escena{position:relative;width:min(92vw,620px);display:flex;flex-direction:column;align-items:center;text-align:center;z-index:1;padding-bottom:4vh}
+
+  /* anillos holográficos */
+  .anillos{position:absolute;top:50%;left:50%;width:min(88vw,540px);aspect-ratio:1;transform:translate(-50%,-62%);pointer-events:none}
+  .anillos svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .a1{animation:giro 22s linear infinite}
+  .a2{animation:giro 14s linear infinite reverse}
+  .a3{animation:giro 36s linear infinite}
+  @keyframes giro{to{transform:rotate(360deg)}}
+  .anillos .nucleo{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.22),rgba(37,99,235,.08) 55%,transparent 70%);animation:latido 2.4s ease-in-out infinite}
+  @keyframes latido{50%{transform:scale(1.12);opacity:.65}}
+
+  /* palabra SIRED */
+  .marca{position:relative;margin:0;padding:0 0 0 .2em;font-family:'Orbitron','Rajdhani',system-ui,sans-serif;font-weight:900;
+    font-size:clamp(58px,19vw,138px);line-height:1;letter-spacing:.2em;text-transform:uppercase;user-select:none;
+    animation:entrada 1.4s cubic-bezier(.2,.8,.2,1) both}
+  .marca .txt{position:relative;display:block;color:transparent;
+    background:linear-gradient(100deg,#a5f3fc 0%,#22d3ee 22%,#3b82f6 50%,#8b5cf6 78%,#e9d5ff 100%);background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;animation:flujo 4s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(34,211,238,.55)) drop-shadow(0 0 38px rgba(59,130,246,.45))}
+  @keyframes flujo{to{background-position:-220% 0}}
+  .marca::before,.marca::after{content:attr(data-t);position:absolute;inset:0;padding-left:.2em;mix-blend-mode:screen;pointer-events:none;opacity:.85}
+  .marca::before{color:#06b6d4;animation:glitchA 5.5s steps(1) infinite}
+  .marca::after{color:#a855f7;animation:glitchB 5.5s steps(1) infinite}
+  @keyframes glitchA{0%,90%,100%{transform:none;clip-path:inset(0 0 100% 0)}91%{transform:translate(-5px,0);clip-path:inset(18% 0 55% 0)}93%{transform:translate(4px,0);clip-path:inset(60% 0 12% 0)}95%{transform:translate(-3px,0);clip-path:inset(35% 0 40% 0)}}
+  @keyframes glitchB{0%,90%,100%{transform:none;clip-path:inset(0 0 100% 0)}92%{transform:translate(5px,0);clip-path:inset(50% 0 20% 0)}94%{transform:translate(-4px,0);clip-path:inset(8% 0 70% 0)}96%{transform:translate(3px,0);clip-path:inset(72% 0 5% 0)}}
+  @keyframes entrada{from{opacity:0;letter-spacing:.7em;filter:blur(14px)}to{opacity:1;letter-spacing:.2em;filter:blur(0)}}
+
+  /* haz de escaneo sobre la palabra */
+  .haz{position:absolute;left:-6%;right:-6%;height:2px;top:0;background:linear-gradient(90deg,transparent,#67e8f9,#fff,#67e8f9,transparent);
+    box-shadow:0 0 18px 4px rgba(34,211,238,.7);animation:barrido 2.8s ease-in-out infinite;z-index:3}
+  @keyframes barrido{0%{top:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{top:100%;opacity:0}}
+
+  /* reflejo holográfico */
+  .reflejo{position:relative;width:100%;height:clamp(26px,7vw,52px);overflow:hidden;margin-top:2px;opacity:.28;
+    -webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
+  .reflejo span{display:block;transform:scaleY(-1);transform-origin:center top;font-family:'Orbitron',system-ui,sans-serif;font-weight:900;
+    font-size:clamp(58px,19vw,138px);line-height:1;letter-spacing:.2em;padding-left:.2em;color:#22d3ee;filter:blur(1.5px)}
+
+  .lema{margin:clamp(10px,2.4vh,20px) 0 0;font-family:'Orbitron',system-ui,sans-serif;font-weight:500;font-size:clamp(9px,2.5vw,12px);
+    letter-spacing:.42em;padding-left:.42em;color:#7dd3fc;opacity:.85;animation:aparece 1.6s .6s both}
+  @keyframes aparece{from{opacity:0;transform:translateY(8px)}to{opacity:.85;transform:none}}
+
+  /* barra de progreso */
+  .panel{width:min(78vw,380px);margin-top:clamp(22px,5vh,40px);animation:aparece 1.6s .9s both}
+  .barra{position:relative;height:6px;border-radius:6px;background:rgba(148,163,184,.14);overflow:hidden;
+    box-shadow:0 0 0 1px rgba(34,211,238,.25),0 0 18px rgba(34,211,238,.15)}
+  #relleno{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#06b6d4,#3b82f6,#8b5cf6);
+    box-shadow:0 0 14px rgba(34,211,238,.9);transition:width .25s linear;position:relative}
+  #relleno::after{content:"";position:absolute;top:0;right:0;width:36px;height:100%;background:linear-gradient(90deg,transparent,#fff);opacity:.9}
+  .datos{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;font-weight:600;letter-spacing:.14em;color:#94a3b8}
+  #estado{color:#a5f3fc;text-align:left}
+  #pct{font-family:'Orbitron',system-ui,sans-serif;font-weight:500;color:#22d3ee;min-width:3.2em;text-align:right}
+
+  #ayuda{position:relative;margin-top:16px;font-size:13px;letter-spacing:.05em;color:#94a3b8;opacity:0;transition:opacity .4s}
+  #ayuda a{color:#22d3ee}
+
+  /* esquinas HUD */
+  .esq{position:absolute;width:34px;height:34px;border:2px solid rgba(34,211,238,.55);z-index:1;animation:aparece 1.2s .3s both}
+  .esq.tl{top:max(18px,env(safe-area-inset-top));left:18px;border-right:0;border-bottom:0}
+  .esq.tr{top:max(18px,env(safe-area-inset-top));right:18px;border-left:0;border-bottom:0}
+  .esq.bl{bottom:max(18px,env(safe-area-inset-bottom));left:18px;border-right:0;border-top:0}
+  .esq.br{bottom:max(18px,env(safe-area-inset-bottom));right:18px;border-left:0;border-top:0}
+
+  @media (prefers-reduced-motion:reduce){
+    .a1,.a2,.a3,.haz,.marca::before,.marca::after,.marca .txt,.anillos .nucleo{animation:none}
+    .marca{animation:none}
+  }
 </style>
 </head>
 <body>
 <div id="cargando">
-  <div class="rueda"></div>
-  <div id="nombre">SIRED</div>
-  <small id="ayuda">Si tarda mucho, <a id="directo" href="#">abrir directamente</a></small>
+  <canvas id="fx"></canvas>
+  <span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>
+
+  <div class="escena">
+    <div class="anillos" aria-hidden="true">
+      <div class="nucleo"></div>
+      <svg class="a1" viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" fill="none" stroke="#22d3ee" stroke-opacity=".55" stroke-width=".6" stroke-dasharray="2 5"/><path d="M100 2a98 98 0 0 1 70 29" fill="none" stroke="#67e8f9" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="a2" viewBox="0 0 200 200"><circle cx="100" cy="100" r="84" fill="none" stroke="#3b82f6" stroke-opacity=".5" stroke-width=".7" stroke-dasharray="14 6 2 6"/><path d="M16 100a84 84 0 0 1 30-64" fill="none" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"/><path d="M184 100a84 84 0 0 1-30 64" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="a3" viewBox="0 0 200 200"><circle cx="100" cy="100" r="70" fill="none" stroke="#8b5cf6" stroke-opacity=".45" stroke-width=".6" stroke-dasharray="1 4"/><path d="M100 30a70 70 0 0 1 60 35" fill="none" stroke="#c4b5fd" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
+
+    <h1 class="marca" id="marca" data-t="SIRED"><span class="txt" id="nombre">SIRED</span><i class="haz"></i></h1>
+    <div class="reflejo" aria-hidden="true"><span id="reflejo">SIRED</span></div>
+    <p class="lema">SISTEMA DE INFORMACION Y RED DIGITAL</p>
+
+    <div class="panel">
+      <div class="barra"><div id="relleno"></div></div>
+      <div class="datos"><span id="estado">INICIANDO NÚCLEO</span><span id="pct">0%</span></div>
+    </div>
+    <small id="ayuda">Si tarda mucho, <a id="directo" href="#">abrir directamente</a></small>
+  </div>
 </div>
 <iframe id="app" title="Aplicación" allow="clipboard-write; web-share; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
@@ -36,7 +133,7 @@
   // 2) Nombre que aparece en la PESTAÑA del navegador (pon el que quieras):
   var NOMBRE_PESTANA = "TRIAJE_SD";
 
-  // 3) Texto de la PANTALLA DE CARGA (el que sale con la rueda girando):
+  // 3) Texto de la PANTALLA DE CARGA (la palabra grande y brillante):
   var TEXTO_CARGA = "SIRED";
 
   // =====================================================================
@@ -44,12 +141,82 @@
   // =====================================================================
   var $ = function (id) { return document.getElementById(id); };
   document.title = (NOMBRE_PESTANA || "").trim() || "Aplicación";
-  $("nombre").textContent = (TEXTO_CARGA || "").trim();
+  var texto = (TEXTO_CARGA || "").trim();
+  $("nombre").textContent = texto;
+  $("marca").setAttribute("data-t", texto);
+  $("reflejo").textContent = texto;
+
+  /* ---------- Fondo animado: rejilla en perspectiva + partículas ---------- */
+  (function () {
+    var cv = $("fx"), cx = cv.getContext("2d"), W, H, DPR, t = 0, parts = [];
+    var quieto = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function medir() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      var n = Math.round(Math.min(90, W * H / 14000));
+      parts = [];
+      for (var i = 0; i < n; i++) parts.push({ x: Math.random() * W, y: Math.random() * H, v: .15 + Math.random() * .5, r: .6 + Math.random() * 1.6, c: Math.random() < .7 ? "34,211,238" : "139,92,246" });
+    }
+    function dibujar() {
+      cx.clearRect(0, 0, W, H);
+      var hz = H * .6, i, y, p;
+      // líneas horizontales que avanzan hacia el espectador
+      for (i = 0; i < 16; i++) {
+        p = ((i + t * .012) % 16) / 16; p = p * p;
+        y = hz + (H - hz) * p;
+        cx.strokeStyle = "rgba(34,211,238," + (.04 + p * .32) + ")"; cx.lineWidth = 1;
+        cx.beginPath(); cx.moveTo(0, y); cx.lineTo(W, y); cx.stroke();
+      }
+      // líneas que convergen en el horizonte
+      for (i = -14; i <= 14; i++) {
+        cx.strokeStyle = "rgba(99,102,241," + (.28 - Math.abs(i) * .012) + ")";
+        cx.beginPath(); cx.moveTo(W / 2 + i * 14, hz); cx.lineTo(W / 2 + i * W * .16, H); cx.stroke();
+      }
+      // resplandor del horizonte
+      var g = cx.createLinearGradient(0, hz - 60, 0, hz + 40);
+      g.addColorStop(0, "rgba(34,211,238,0)"); g.addColorStop(.6, "rgba(34,211,238,.16)"); g.addColorStop(1, "rgba(34,211,238,0)");
+      cx.fillStyle = g; cx.fillRect(0, hz - 60, W, 100);
+      // partículas de datos
+      for (i = 0; i < parts.length; i++) {
+        var q = parts[i];
+        if (!quieto) { q.y -= q.v; if (q.y < -4) { q.y = H + 4; q.x = Math.random() * W; } }
+        cx.fillStyle = "rgba(" + q.c + "," + (.25 + .5 * Math.abs(Math.sin(t * .02 + i))) + ")";
+        cx.beginPath(); cx.arc(q.x, q.y, q.r, 0, 6.283); cx.fill();
+      }
+      if (!quieto) { t++; if ($("cargando").style.display !== "none") requestAnimationFrame(dibujar); }
+    }
+    window.addEventListener("resize", medir);
+    medir(); dibujar();
+  })();
+
+  /* ---------- Progreso y mensajes de estado ---------- */
+  var progreso = 0, listo = false, cerrando = false;
+  var fases = [[0, "INICIANDO NÚCLEO"], [18, "CONECTANDO SERVIDOR"], [42, "SINCRONIZANDO DATOS"], [66, "CARGANDO MÓDULOS"], [84, "CASI LISTO"], [100, "SISTEMA EN LÍNEA"]];
+  function pintar() {
+    var v = Math.floor(progreso), e = fases[0][1];
+    for (var i = 0; i < fases.length; i++) if (v >= fases[i][0]) e = fases[i][1];
+    $("relleno").style.width = progreso + "%";
+    $("pct").textContent = v + "%";
+    $("estado").textContent = e;
+  }
+  var reloj = setInterval(function () {
+    if (!listo) progreso += Math.max(.08, (90 - progreso) * .025);
+    else progreso = Math.min(100, progreso + 4);
+    pintar();
+    if (listo && progreso >= 100 && !cerrando) {
+      cerrando = true; clearInterval(reloj);
+      setTimeout(function () {
+        var c = $("cargando"); c.classList.add("salir");
+        setTimeout(function () { c.style.display = "none"; }, 750);
+      }, 350);
+    }
+  }, 60);
 
   if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(URL_APPS_SCRIPT)) {
-    document.querySelector(".rueda").style.display = "none";
-    $("nombre").textContent = "FALTA CONFIGURAR LA URL";
-    $("ayuda").innerHTML = "Edita este archivo y pega la URL /exec en <b>URL_APPS_SCRIPT</b>";
+    clearInterval(reloj);
+    document.querySelector(".panel").style.display = "none";
+    $("ayuda").innerHTML = "FALTA CONFIGURAR LA URL<br>Edita este archivo y pega la URL /exec en <b>URL_APPS_SCRIPT</b>";
     $("ayuda").style.opacity = "1";
   } else {
     // Se conserva lo que venga después del "?" (por ejemplo ?verificar=SOL-...)
@@ -57,10 +224,7 @@
     var marco = $("app");
     marco.src = destino;
     $("directo").href = destino;
-    marco.addEventListener("load", function () {
-      var c = $("cargando");
-      c.style.opacity = "0"; setTimeout(function () { c.style.display = "none"; }, 500);
-    });
+    marco.addEventListener("load", function () { listo = true; });
     setTimeout(function () { $("ayuda").style.opacity = "1"; }, 9000);
   }
 </script>
